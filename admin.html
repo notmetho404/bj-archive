@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ARCHIVE ADMIN</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0F0F0F;color:#ECECE7;font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.6}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #FF4F1F;outline-offset:2px}
+.mono{font-family:'Space Mono','Nanum Gothic Coding',monospace}
+.bar{position:sticky;top:0;z-index:10;background:#151515;border-bottom:1px solid #2E2E2B;padding:10px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.bar h1{margin:0;font-size:16px;letter-spacing:.12em}
+.bar h1 i{font-style:normal;color:#FF4F1F}
+.status{font-size:12px;color:#B8B8B2;flex:1 1 200px}
+.status.dirty{color:#FF8A66}
+.btn{border:1px solid #6A6A66;background:none;padding:9px 14px;font-size:13px;letter-spacing:.04em;min-height:40px}
+.btn:hover{background:#2A2A28}
+.btn.pri{background:#FF4F1F;border-color:#FF4F1F;color:#0B0B0B;font-weight:700}
+.btn.pri:hover{background:#FF6A40}
+.btn.danger{border-color:#B84A3A;color:#FF9C8A}
+.btn.danger:hover{background:#3A1814}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:5px 10px;min-height:32px;font-size:12px}
+#notice{padding:0 20px}
+.note{margin:12px 0 0;background:#1E1A12;border:1px solid #6B5A2A;padding:12px 16px;font-size:14px;line-height:1.7}
+.note.ok{background:#102016;border-color:#2F6B45}
+.note.err{background:#2A1512;border-color:#8A3A2E}
+.note .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.layout{display:flex;flex-wrap:wrap;gap:20px;padding:20px;align-items:flex-start}
+aside{flex:0 0 300px;max-width:100%;display:flex;flex-direction:column;gap:12px}
+main{flex:1 1 560px;min-width:0}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;border:1px solid #3A3A38;background:#171717;padding:10px 4px;font-size:13px;font-weight:700}
+.tabs button.on{background:#FF4F1F;color:#0B0B0B;border-color:#FF4F1F}
+.in,.ta,.sl{width:100%;background:#171717;border:1px solid #3A3A38;padding:10px 12px;font-size:15px;border-radius:0}
+.in:focus,.ta:focus,.sl:focus{border-color:#FF4F1F;outline:none}
+.ta{resize:vertical;line-height:1.8}
+#list{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow:auto}
+.item{text-align:left;background:#171717;border:1px solid #2E2E2B;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.item:hover{border-color:#6A6A66}
+.item.on{border-color:#FF4F1F;background:#241510}
+.item .t{font-weight:700;overflow-wrap:anywhere}
+.item .s{font-size:12px;color:#B8B8B2}
+.card{background:#151515;border:1px solid #2E2E2B;padding:20px;display:flex;flex-direction:column;gap:20px}
+.ehead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-bottom:14px;border-bottom:1px solid #2E2E2B}
+.ehead h2{margin:0;font-size:20px;overflow-wrap:anywhere}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.full{grid-column:1/-1}
+.f label,.lab{font-size:12px;letter-spacing:.08em;color:#B8B8B2;font-family:'Space Mono','Nanum Gothic Coding',monospace}
+.hint{font-size:12px;color:#9A9A94;line-height:1.6;margin:0}
+.sec{border-top:1px solid #2E2E2B;padding-top:18px;display:flex;flex-direction:column;gap:12px}
+.sec h3{margin:0;font-size:14px;letter-spacing:.08em;color:#FF8A66}
+.imgs{display:flex;flex-wrap:wrap;gap:12px}
+.im{width:130px;display:flex;flex-direction:column;gap:6px}
+.im .p{position:relative;width:130px;height:130px;background:#000;border:1px solid #3A3A38}
+.im img{width:100%;height:100%;object-fit:cover;display:block}
+.im .badge{position:absolute;left:0;top:0;background:#FF4F1F;color:#0B0B0B;font-size:11px;font-weight:700;padding:1px 6px}
+.im .pend{position:absolute;right:0;bottom:0;background:#fff;color:#111;font-size:10px;padding:1px 5px}
+.im .b{display:flex;gap:4px}
+.ex{display:grid;grid-template-columns:1fr 2fr auto;gap:8px;align-items:center}
+.guide{background:#171717;border:1px dashed #4A4A46;padding:12px 14px;font-size:13px;line-height:1.8;color:#C9C9C3}
+.guide code{background:#2A2A28;padding:1px 6px;font-family:'Space Mono','Nanum Gothic Coding',monospace}
+.empty{padding:60px 20px;text-align:center;color:#9A9A94}
+dialog{background:#171717;color:#ECECE7;border:1px solid #6A6A66;padding:24px;max-width:520px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+dialog h2{margin:0 0 6px;font-size:18px}
+dialog form{display:flex;flex-direction:column;gap:14px}
+dialog ol{margin:0;padding-left:20px;font-size:13px;line-height:1.9;color:#C9C9C3}
+dialog a{color:#FF8A66}
+@media (max-width:720px){aside{flex-basis:100%}.layout{padding:12px}.card{padding:14px}}
+</style>
+</head>
+<body>
+<div class="bar">
+<h1 class="mono">ARCHIVE<i>/</i>ADMIN</h1>
+<span class="status" id="status">불러오는 중…</span>
+<button class="btn" data-act="gh-open">GitHub 설정</button>
+<button class="btn" data-act="zip">ZIP으로 내보내기</button>
+<button class="btn pri" data-act="gh-save" id="saveBtn">GitHub에 저장</button>
+</div>
+<div id="notice"></div>
+
+<div class="layout">
+<aside>
+<div class="tabs" id="tabs">
+<button data-act="tab" data-tab="site">사이트</button>
+<button data-act="tab" data-tab="chars">캐릭터</button>
+<button data-act="tab" data-tab="logs">로그</button>
+</div>
+<div id="sideCtl"></div>
+<div id="list"></div>
+</aside>
+<main><div id="editor"></div></main>
+</div>
+
+<dialog id="ghdlg">
+<form method="dialog" id="ghform">
+<h2>GitHub 연결</h2>
+<p class="hint">연결하면 저장 버튼 한 번으로 데이터와 사진이 저장소에 올라가요. 입력한 값은 이 브라우저(localStorage)에만 저장돼요. 공용 컴퓨터에서는 쓰지 마세요.</p>
+<div class="f"><label for="gOwner">GITHUB 아이디 (OWNER)</label><input class="in" id="gOwner" autocomplete="off"></div>
+<div class="f"><label for="gRepo">저장소 이름</label><input class="in" id="gRepo" autocomplete="off"></div>
+<div class="f"><label for="gBranch">브랜치</label><input class="in" id="gBranch" value="main" autocomplete="off"></div>
+<div class="f"><label for="gToken">TOKEN (FINE-GRAINED)</label><input class="in" id="gToken" type="password" autocomplete="off" placeholder="github_pat_..."></div>
+<ol>
+<li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">토큰 만들기 페이지</a>를 열어요.</li>
+<li>Repository access → <b>Only select repositories</b> → 이 저장소 하나만 선택해요.</li>
+<li>Permissions → Repository permissions → <b>Contents: Read and write</b>.</li>
+<li>Generate token을 누르고 나온 값을 위 칸에 붙여 넣어요.</li>
+</ol>
+<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end">
+<button class="btn danger" type="button" id="ghClear">토큰 삭제</button>
+<button class="btn" type="button" id="ghClose">닫기</button>
+<button class="btn pri" type="submit" id="ghSave">저장</button>
+</div>
+</form>
+</dialog>
+
+<script>
+(function () {
+'use strict';
+var LS_DRAFT = 'archiveDraft_v1', LS_GH = 'archiveGH_v1';
+var S = { data: null, tab: 'chars', sel: null, dirty: false, q: '', fc: '', busy: false };
+var draftTimer = null, draftWarned = false;
+
+function $(s, r) { return (r || document).querySelector(s); }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function pad(n) { return String(n).padStart(2, '0'); }
+function genId(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+function today() { var d = new Date(); return d.getFullYear() + '.' + pad(d.getMonth() + 1) + '.' + pad(d.getDate()); }
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function safeId(s) { return String(s).replace(/[^a-zA-Z0-9_-]/g, '') || 'x'; }
+
+function normalize(d) {
+  d = d && typeof d === 'object' ? d : {};
+  d.site = d.site || {}; d.characters = d.characters || []; d.logs = d.logs || [];
+  d.characters.forEach(function (c) { c.images = c.images || []; c.extra = c.extra || []; });
+  return d;
+}
+
+/* ---------- status / notice ---------- */
+function updateBar() {
+  var el = $('#status');
+  if (S.busy) return;
+  el.textContent = S.dirty ? '● 저장되지 않은 변경사항이 있어요' : '✓ 저장된 상태예요';
+  el.className = 'status' + (S.dirty ? ' dirty' : '');
+}
+function setStatus(msg) { var el = $('#status'); el.textContent = msg; el.className = 'status'; }
+function notice(html, kind) { $('#notice').innerHTML = html ? '<div class="note ' + (kind || '') + '">' + html + '</div>' : ''; }
+function markDirty() {
+  S.dirty = true; updateBar();
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(function () {
+    try { localStorage.setItem(LS_DRAFT, JSON.stringify(S.data)); }
+    catch (e) { if (!draftWarned) { draftWarned = true; notice('임시 저장 공간이 가득 찼어요. 사진이 많다면 먼저 “GitHub에 저장”이나 ZIP 내보내기를 해 주세요.', 'err'); } }
+  }, 600);
+}
+window.addEventListener('beforeunload', function (e) { if (S.dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+/* ---------- data load ---------- */
+function loadServer(cb) {
+  var s = document.createElement('script');
+  s.src = 'data/archive.js?v=' + Date.now();
+  s.onload = function () { cb(normalize(window.ARCHIVE_DATA ? clone(window.ARCHIVE_DATA) : null)); };
+  s.onerror = function () { cb(normalize(null)); notice('data/archive.js 를 불러오지 못해서 빈 데이터로 시작해요. 저장하면 새로 만들어져요.', 'err'); };
+  document.head.appendChild(s);
+}
+function init() {
+  loadServer(function (d) {
+    S.data = d;
+    var draft = null;
+    try { draft = JSON.parse(localStorage.getItem(LS_DRAFT) || 'null'); } catch (e) { draft = null; }
+    if (draft && JSON.stringify(draft) !== JSON.stringify(d)) {
+      notice('저장하지 않은 <b>임시 저장본</b>이 있어요. 불러올까요?<div class="row"><button class="btn pri sm" data-act="draft-use">임시 저장본 불러오기</button><button class="btn sm" data-act="draft-drop">버리기</button></div>');
+      window.__draft = draft;
+    }
+    S.tab = 'chars'; S.sel = d.characters.length ? d.characters[0].id : null;
+    S.dirty = false; render(); updateBar();
+  });
+}
+
+/* ---------- finders ---------- */
+function curChar() { return S.data.characters.filter(function (c) { return c.id === S.sel; })[0]; }
+function curLog() { return S.data.logs.filter(function (l) { return l.id === S.sel; })[0]; }
+function cur() { return S.tab === 'site' ? S.data.site : S.tab === 'chars' ? curChar() : curLog(); }
+function charName(id) { var c = S.data.characters.filter(function (x) { return x.id === id; })[0]; return c ? c.name : '(삭제된 캐릭터)'; }
+
+/* ---------- render ---------- */
+function render() { renderTabs(); renderSide(); renderList(); renderEditor(); }
+function renderTabs() {
+  [].forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.classList.toggle('on', b.dataset.tab === S.tab); });
+}
+function renderSide() {
+  var el = $('#sideCtl');
+  if (S.tab === 'site') { el.innerHTML = '<p class="hint">홈 화면의 제목·소개 문구를 바꿔요.</p>'; return; }
+  if (S.tab === 'chars') {
+    el.innerHTML = '<button class="btn pri" data-act="new" style="width:100%">+ 새 캐릭터</button>' +
+      '<input class="in" id="q" placeholder="이름·소속으로 검색" value="' + esc(S.q) + '" style="margin-top:10px">';
+  } else {
+    var opts = '<option value="">전체 캐릭터</option>' + S.data.characters.map(function (c) { return '<option value="' + esc(c.id) + '"' + (c.id === S.fc ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('');
+    el.innerHTML = '<button class="btn pri" data-act="new" style="width:100%">+ 새 로그</button>' +
+      '<select class="sl" id="fc" style="margin-top:10px">' + opts + '</select>' +
+      '<input class="in" id="q" placeholder="제목으로 검색" value="' + esc(S.q) + '" style="margin-top:10px">';
+  }
+}
+function renderList() {
+  var el = $('#list'), html = '';
+  if (S.tab === 'site') { el.innerHTML = ''; return; }
+  var q = S.q.trim().toLowerCase();
+  if (S.tab === 'chars') {
+    S.data.characters.forEach(function (c, i) {
+      if (q && (c.name + ' ' + c.affiliation).toLowerCase().indexOf(q) < 0) return;
+      html += '<button class="item' + (c.id === S.sel ? ' on' : '') + '" data-act="sel" data-id="' + esc(c.id) + '"><span class="t">' + pad(i + 1) + ' · ' + esc(c.name || '이름 없음') + '</span><span class="s">' + esc([c.affiliation, c.job].filter(Boolean).join(' · ') || '정보 없음') + '</span></button>';
+    });
+    if (!html) html = '<p class="hint">캐릭터가 없어요. “+ 새 캐릭터”를 눌러 보세요.</p>';
+  } else {
+    var arr = S.data.logs.slice().sort(function (a, b) { return (a.date || '') < (b.date || '') ? 1 : -1; });
+    arr.forEach(function (l) {
+      if (S.fc && l.characterId !== S.fc) return;
+      if (q && (l.title || '').toLowerCase().indexOf(q) < 0) return;
+      html += '<button class="item' + (l.id === S.sel ? ' on' : '') + '" data-act="sel" data-id="' + esc(l.id) + '"><span class="t">' + esc(l.title || '제목 없음') + '</span><span class="s">' + esc((l.date || '날짜 없음') + ' · ' + charName(l.characterId)) + '</span></button>';
+    });
+    if (!html) html = '<p class="hint">로그가 없어요. “+ 새 로그”를 눌러 보세요.</p>';
+  }
+  el.innerHTML = html;
+}
+function fld(label, key, val, opts) {
+  opts = opts || {};
+  var inner = opts.ta
+    ? '<textarea class="ta" data-f="' + key + '" rows="' + opts.ta + '" placeholder="' + esc(opts.ph || '') + '">' + esc(val) + '</textarea>'
+    : '<input class="in" data-f="' + key + '" value="' + esc(val) + '" placeholder="' + esc(opts.ph || '') + '"' + (opts.type ? ' type="' + opts.type + '"' : '') + '>';
+  return '<div class="f' + (opts.full ? ' full' : '') + '"><label>' + label + '</label>' + inner + (opts.hint ? '<p class="hint">' + opts.hint + '</p>' : '') + '</div>';
+}
+function imagesHtml(c) {
+  if (!c.images.length) return '<p class="hint">아직 사진이 없어요. 첫 번째 사진이 목록의 대표 사진이 돼요.</p>';
+  return '<div class="imgs">' + c.images.map(function (src, i) {
+    var pend = src.indexOf('data:') === 0;
+    return '<div class="im"><div class="p"><img src="' + esc(src) + '" alt="">' + (i === 0 ? '<span class="badge mono">대표</span>' : '') + (pend ? '<span class="pend">새 사진</span>' : '') + '</div>' +
+      '<div class="b"><button class="btn sm" data-act="img-first" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + '>대표로</button><button class="btn sm danger" data-act="img-del" data-i="' + i + '">삭제</button></div></div>';
+  }).join('') + '</div>';
+}
+function extraHtml(c) {
+  return c.extra.map(function (e, i) {
+    return '<div class="ex"><input class="in" data-ek="1" data-i="' + i + '" value="' + esc(e.k) + '" placeholder="항목 이름"><input class="in" data-ev="1" data-i="' + i + '" value="' + esc(e.v) + '" placeholder="내용"><button class="btn sm danger" data-act="extra-del" data-i="' + i + '">삭제</button></div>';
+  }).join('');
+}
+function renderEditor() {
+  var el = $('#editor'), o = cur();
+  if (S.tab !== 'site' && !o) { el.innerHTML = '<div class="card empty">왼쪽에서 항목을 선택하거나 새로 만들어 주세요.</div>'; return; }
+  if (S.tab === 'site') {
+    var s = S.data.site;
+    el.innerHTML = '<div class="card"><div class="ehead"><h2>사이트 설정</h2></div><div class="g2">' +
+      fld('로고 글자', 'logo', s.logo, { ph: 'ARCHIVE' }) + fld('상단 작은 문구', 'kicker', s.kicker, { ph: 'CHARACTER ARCHIVE' }) +
+      fld('VOL.', 'vol', s.vol, { ph: '01' }) +
+      fld('홈 큰 제목', 'title', s.title, { ta: 3, full: true, hint: '줄바꿈이 그대로 반영돼요. 영문 대문자를 추천해요.' }) +
+      fld('홈 소개 문구', 'tagline', s.tagline, { ta: 3, full: true }) + '</div></div>';
+    return;
+  }
+  if (S.tab === 'chars') {
+    var c = o;
+    el.innerHTML = '<div class="card"><div class="ehead"><h2 id="eh">' + esc(c.name || '이름 없음') + '</h2><div class="acts"><button class="btn sm" data-act="up">↑ 위로</button><button class="btn sm" data-act="down">↓ 아래로</button><button class="btn sm danger" data-act="del">삭제</button></div></div>' +
+      '<div class="g2">' + fld('이름', 'name', c.name) + fld('나이', 'age', c.age) + fld('성별', 'gender', c.gender) + fld('신체', 'body', c.body, { ph: '키, 체형 등' }) +
+      fld('직업', 'job', c.job) + fld('소속', 'affiliation', c.affiliation) + fld('테마곡', 'theme', c.theme, { hint: '링크(https://…)를 넣으면 눌러서 열려요.' }) + fld('뛰었던 커뮤', 'community', c.community) +
+      fld('관계인물', 'relations', c.relations, { ta: 3, full: true, hint: '등록된 다른 캐릭터의 이름을 적으면 자동으로 그 캐릭터 페이지로 링크가 걸려요.' }) + '</div>' +
+      '<div class="sec"><h3>사진</h3><div id="imgs">' + imagesHtml(c) + '</div><div><label class="btn" style="display:inline-block">+ 사진 추가<input type="file" accept="image/*" multiple id="file" style="display:none"></label></div><p class="hint">큰 사진은 자동으로 긴 변 1400px 이하 JPEG로 줄여서 올라가요. (움직이는 GIF는 첫 장면만 남아요)</p></div>' +
+      '<div class="sec"><h3>설명 (줄글)</h3>' + fld('위쪽 배너 문구', 'descTitle', c.descTitle, { ph: '프로필' }) + fld('본문', 'desc', c.desc, { ta: 12, full: true, hint: '빈 줄로 문단을 나눠요.' }) + '</div>' +
+      '<div class="sec"><h3>특이사항</h3>' + fld('위쪽 배너 문구', 'notesTitle', c.notesTitle, { ph: '특이사항' }) + fld('내용', 'notes', c.notes, { ta: 8, full: true, hint: '한 줄에 하나씩, 가운데 정렬로 보여요. 빈 줄은 간격이 돼요.' }) + '</div>' +
+      '<div class="sec"><h3>한마디</h3>' + fld('위쪽 배너 문구', 'quoteTitle', c.quoteTitle, { ph: '한마디' }) + fld('내용', 'quote', c.quote, { ta: 4, full: true }) + '</div>' +
+      '<div class="sec"><h3>추가 항목</h3><div id="extras" style="display:flex;flex-direction:column;gap:8px">' + extraHtml(c) + '</div><div><button class="btn sm" data-act="extra-add">+ 항목 추가</button></div><p class="hint">생일, 좋아하는 것 등 기본 항목 외에 보여 주고 싶은 정보를 넣어요.</p></div></div>';
+    return;
+  }
+  var l = o;
+  var copts = S.data.characters.map(function (c) { return '<option value="' + esc(c.id) + '"' + (c.id === l.characterId ? ' selected' : '') + '>' + esc(c.name) + '</option>'; }).join('');
+  el.innerHTML = '<div class="card"><div class="ehead"><h2 id="eh">' + esc(l.title || '제목 없음') + '</h2><div class="acts"><button class="btn sm danger" data-act="del">삭제</button></div></div>' +
+    '<div class="g2">' + fld('제목', 'title', l.title, { full: true }) + fld('날짜', 'date', l.date, { type: 'date' }) +
+    '<div class="f"><label>캐릭터</label><select class="sl" data-f="characterId">' + copts + '</select></div></div>' +
+    '<div class="f"><label>본문 <span id="cnt" style="color:#9A9A94">(' + (l.body || '').length + '자)</span></label><textarea class="ta" data-f="body" rows="26" placeholder="서술과 대사를 통째로 붙여 넣으세요">' + esc(l.body) + '</textarea></div>' +
+    '<div class="guide"><b>쓰는 법</b><br>· 서술은 그냥 적어요.<br>· 따옴표 <code>"…"</code> <code>“…”</code> <code>「…」</code> 로 감싼 부분은 대사로 강조돼요.<br>· 줄 맨 앞에 <code>&gt;</code> 를 붙이면 내 대사/행동으로 따로 표시돼요.<br>· <code>---</code> 한 줄은 장면 구분선이 돼요.</div></div>';
+}
+
+/* ---------- input handling ---------- */
+function onField(e) {
+  var t = e.target, o = cur();
+  if (!o) return;
+  if (t.dataset.f) {
+    o[t.dataset.f] = t.value; markDirty();
+    if (t.dataset.f === 'name' || t.dataset.f === 'title') { var h = $('#eh'); if (h) h.textContent = t.value || (S.tab === 'chars' ? '이름 없음' : '제목 없음'); }
+    if (['name', 'title', 'date', 'characterId', 'affiliation', 'job'].indexOf(t.dataset.f) >= 0) renderList();
+    if (t.dataset.f === 'body') { var c = $('#cnt'); if (c) c.textContent = '(' + t.value.length + '자)'; }
+  } else if (t.dataset.ek) { o.extra[+t.dataset.i].k = t.value; markDirty(); }
+  else if (t.dataset.ev) { o.extra[+t.dataset.i].v = t.value; markDirty(); }
+}
+$('#editor').addEventListener('input', onField);
+$('#editor').addEventListener('change', function (e) {
+  if (e.target.id === 'file') { addImages(e.target.files); e.target.value = ''; return; }
+  if (e.target.tagName === 'SELECT') onField(e);
+});
+$('#sideCtl').addEventListener('input', function (e) { if (e.target.id === 'q') { S.q = e.target.value; renderList(); } });
+$('#sideCtl').addEventListener('change', function (e) { if (e.target.id === 'fc') { S.fc = e.target.value; renderList(); } });
+
+/* ---------- images ---------- */
+function readImage(file) {
+  return new Promise(function (res, rej) {
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var max = 1400, k = Math.min(1, max / Math.max(img.width, img.height));
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+        var cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height);
+        cx.drawImage(img, 0, 0, cv.width, cv.height);
+        res(cv.toDataURL('image/jpeg', 0.86));
+      };
+      img.onerror = function () { rej(new Error('이미지를 읽을 수 없어요: ' + file.name)); };
+      img.src = fr.result;
+    };
+    fr.onerror = function () { rej(new Error('파일을 읽을 수 없어요: ' + file.name)); };
+    fr.readAsDataURL(file);
+  });
+}
+async function addImages(files) {
+  var c = curChar(); if (!c || !files.length) return;
+  setStatus('사진 처리 중…');
+  try {
+    for (var i = 0; i < files.length; i++) c.images.push(await readImage(files[i]));
+    $('#imgs').innerHTML = imagesHtml(c); markDirty();
+  } catch (err) { notice(esc(err.message), 'err'); updateBar(); }
+}
+
+/* ---------- clicks ---------- */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  var a = b.dataset.act, i = +b.dataset.i;
+  if (a === 'tab') {
+    S.tab = b.dataset.tab; S.q = ''; S.fc = '';
+    S.sel = S.tab === 'chars' ? (S.data.characters[0] || {}).id : S.tab === 'logs' ? (S.data.logs[0] || {}).id : null;
+    render();
+  } else if (a === 'sel') { S.sel = b.dataset.id; renderList(); renderEditor(); }
+  else if (a === 'new') {
+    if (S.tab === 'chars') {
+      var c = { id: genId('c'), name: '새 캐릭터', age: '', gender: '', body: '', job: '', affiliation: '', relations: '', theme: '', community: '', images: [], descTitle: '프로필', desc: '', notesTitle: '특이사항', notes: '', quoteTitle: '한마디', quote: '', extra: [] };
+      S.data.characters.push(c); S.sel = c.id;
+    } else {
+      if (!S.data.characters.length) { alert('먼저 캐릭터를 하나 만들어 주세요.'); return; }
+      var l = { id: genId('l'), title: '새 로그', date: new Date().toISOString().slice(0, 10), characterId: S.fc || S.data.characters[0].id, body: '' };
+      S.data.logs.push(l); S.sel = l.id;
+    }
+    markDirty(); render();
+  }
+  else if (a === 'del') {
+    var o = cur(); if (!o) return;
+    var msg = S.tab === 'chars' ? '“' + (o.name || '이름 없음') + '” 캐릭터를 삭제할까요?\n연결된 로그는 남지만 캐릭터 표시가 “(삭제된 캐릭터)”가 돼요.' : '“' + (o.title || '제목 없음') + '” 로그를 삭제할까요?';
+    if (!confirm(msg)) return;
+    var arr = S.tab === 'chars' ? S.data.characters : S.data.logs;
+    arr.splice(arr.indexOf(o), 1); S.sel = arr.length ? arr[Math.max(0, Math.min(arr.length - 1, 0))].id : null;
+    markDirty(); render();
+  }
+  else if (a === 'up' || a === 'down') {
+    var arr2 = S.data.characters, o2 = curChar(), idx = arr2.indexOf(o2), n = a === 'up' ? idx - 1 : idx + 1;
+    if (n < 0 || n >= arr2.length) return;
+    arr2.splice(idx, 1); arr2.splice(n, 0, o2); markDirty(); renderList();
+  }
+  else if (a === 'img-del') { var c1 = curChar(); c1.images.splice(i, 1); $('#imgs').innerHTML = imagesHtml(c1); markDirty(); }
+  else if (a === 'img-first') { var c2 = curChar(); var im = c2.images.splice(i, 1)[0]; c2.images.unshift(im); $('#imgs').innerHTML = imagesHtml(c2); markDirty(); }
+  else if (a === 'extra-add') { var c3 = curChar(); c3.extra.push({ k: '', v: '' }); $('#extras').innerHTML = extraHtml(c3); markDirty(); }
+  else if (a === 'extra-del') { var c4 = curChar(); c4.extra.splice(i, 1); $('#extras').innerHTML = extraHtml(c4); markDirty(); }
+  else if (a === 'draft-use') { S.data = normalize(window.__draft); S.sel = S.data.characters[0] ? S.data.characters[0].id : null; S.tab = 'chars'; S.dirty = true; notice('임시 저장본을 불러왔어요.', 'ok'); render(); updateBar(); }
+  else if (a === 'draft-drop') { try { localStorage.removeItem(LS_DRAFT); } catch (err) {} notice(''); }
+  else if (a === 'gh-open') openGH();
+  else if (a === 'gh-save') saveGH();
+  else if (a === 'zip') exportZip();
+});
+
+/* ---------- helpers: build ---------- */
+function buildJS(d) { return 'window.ARCHIVE_DATA = ' + JSON.stringify(d, null, 2) + ';\n'; }
+function textToB64(t) {
+  var bytes = new TextEncoder().encode(t), bin = '';
+  for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+function imgPath(c, i) { return 'images/' + safeId(c.id) + '-' + Date.now().toString(36) + '-' + i + '.jpg'; }
+
+/* ---------- GitHub ---------- */
+function getGH() { try { return JSON.parse(localStorage.getItem(LS_GH) || 'null') || {}; } catch (e) { return {}; } }
+function openGH() {
+  var g = getGH(), host = location.hostname, m = host.match(/^(.+)\.github\.io$/);
+  $('#gOwner').value = g.owner || (m ? m[1] : '');
+  $('#gRepo').value = g.repo || (m ? (location.pathname.split('/')[1] || '') : '');
+  $('#gBranch').value = g.branch || 'main';
+  $('#gToken').value = g.token || '';
+  $('#ghdlg').showModal();
+}
+$('#ghClose').addEventListener('click', function () { $('#ghdlg').close(); });
+$('#ghClear').addEventListener('click', function () { var g = getGH(); g.token = ''; localStorage.setItem(LS_GH, JSON.stringify(g)); $('#gToken').value = ''; notice('토큰을 이 브라우저에서 삭제했어요.', 'ok'); });
+$('#ghform').addEventListener('submit', function () {
+  localStorage.setItem(LS_GH, JSON.stringify({ owner: $('#gOwner').value.trim(), repo: $('#gRepo').value.trim(), branch: $('#gBranch').value.trim() || 'main', token: $('#gToken').value.trim() }));
+  notice('GitHub 연결 정보를 저장했어요.', 'ok');
+});
+async function apiErr(res) {
+  var j = {}; try { j = await res.json(); } catch (e) {}
+  var base = res.status === 401 ? '토큰이 올바르지 않거나 만료됐어요.' : res.status === 403 ? '권한이 없어요. 토큰의 Contents(Read and write) 권한과 저장소 선택을 확인해 주세요.' : res.status === 404 ? '저장소나 브랜치를 찾을 수 없어요. 아이디·저장소·브랜치 이름과 토큰의 저장소 접근 권한을 확인해 주세요.' : '요청에 실패했어요 (' + res.status + ').';
+  return new Error(base + (j.message ? ' [' + j.message + ']' : ''));
+}
+function ghUrl(cfg, path) { return 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) + '/contents/' + path.split('/').map(encodeURIComponent).join('/'); }
+function ghHeaders(cfg) { return { Authorization: 'Bearer ' + cfg.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
+async function ghSha(cfg, path) {
+  var res = await fetch(ghUrl(cfg, path) + '?ref=' + encodeURIComponent(cfg.branch), { headers: ghHeaders(cfg) });
+  if (res.status === 404) return null;
+  if (!res.ok) throw await apiErr(res);
+  return (await res.json()).sha;
+}
+async function ghPut(cfg, path, b64, msg, withSha) {
+  var sha = withSha ? await ghSha(cfg, path) : null;
+  for (var attempt = 0; attempt < 2; attempt++) {
+    var body = { message: msg, content: b64, branch: cfg.branch }; if (sha) body.sha = sha;
+    var res = await fetch(ghUrl(cfg, path), { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(cfg)), body: JSON.stringify(body) });
+    if (res.ok) return;
+    if ((res.status === 409 || res.status === 422) && attempt === 0) { sha = await ghSha(cfg, path); continue; }
+    throw await apiErr(res);
+  }
+}
+async function saveGH() {
+  var cfg = getGH();
+  if (!cfg.owner || !cfg.repo || !cfg.token) { notice('먼저 <b>GitHub 설정</b>에서 아이디·저장소·토큰을 입력해 주세요.', 'err'); openGH(); return; }
+  if (S.busy) return;
+  S.busy = true; $('#saveBtn').disabled = true; notice('');
+  try {
+    var d = S.data, total = 0, n = 0;
+    d.characters.forEach(function (c) { c.images.forEach(function (s) { if (s.indexOf('data:') === 0) total++; }); });
+    for (var ci = 0; ci < d.characters.length; ci++) {
+      var c = d.characters[ci];
+      for (var i = 0; i < c.images.length; i++) {
+        if (c.images[i].indexOf('data:') !== 0) continue;
+        n++; setStatus('사진 올리는 중… ' + n + ' / ' + total);
+        var path = imgPath(c, i);
+        await ghPut(cfg, path, c.images[i].split(',')[1], '사진 추가: ' + c.name, false);
+        c.images[i] = path;
+      }
+    }
+    d.site.updated = today();
+    setStatus('데이터 저장 중…');
+    await ghPut(cfg, 'data/archive.js', textToB64(buildJS(d)), '아카이브 데이터 업데이트', true);
+    S.dirty = false; try { localStorage.removeItem(LS_DRAFT); } catch (e) {}
+    notice('저장했어요! 1~2분 뒤 사이트에 반영돼요. (바로 안 보이면 새로고침해 주세요)', 'ok');
+    renderEditor();
+  } catch (err) {
+    notice('저장에 실패했어요: ' + esc(err.message || err) + '<br>입력한 내용은 이 브라우저에 임시 저장돼 있어요.', 'err');
+  } finally { S.busy = false; $('#saveBtn').disabled = false; updateBar(); }
+}
+
+/* ---------- ZIP export ---------- */
+function download(name, blob) {
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+function loadJSZip() {
+  return new Promise(function (res, rej) {
+    if (window.JSZip) return res(window.JSZip);
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = function () { res(window.JSZip); }; s.onerror = function () { rej(new Error('JSZip을 불러오지 못했어요')); };
+    document.head.appendChild(s);
+  });
+}
+async function exportZip() {
+  var d = clone(S.data); d.site.updated = today();
+  var files = [];
+  d.characters.forEach(function (c) {
+    c.images = c.images.map(function (s, i) {
+      if (s.indexOf('data:') !== 0) return s;
+      var p = imgPath(c, i); files.push({ path: p, b64: s.split(',')[1] }); return p;
+    });
+  });
+  var js = buildJS(d);
+  try {
+    var Z = await loadJSZip(), zip = new Z();
+    zip.file('data/archive.js', js);
+    files.forEach(function (f) { zip.file(f.path, f.b64, { base64: true }); });
+    download('archive-update.zip', await zip.generateAsync({ type: 'blob' }));
+    notice('<b>archive-update.zip</b>을 내려받았어요. 압축을 풀어서 <b>data 폴더와 images 폴더</b>를 GitHub 저장소에 업로드(덮어쓰기)해 주세요.', 'ok');
+  } catch (err) {
+    download('archive.js', new Blob([js], { type: 'text/javascript' }));
+    files.forEach(function (f) {
+      var bin = atob(f.b64), u = new Uint8Array(bin.length); for (var k = 0; k < bin.length; k++) u[k] = bin.charCodeAt(k);
+      download(f.path.split('/').pop(), new Blob([u], { type: 'image/jpeg' }));
+    });
+    notice('ZIP을 만들 수 없어서 파일을 따로 내려받았어요. <b>archive.js</b>는 data 폴더에, 사진은 images 폴더에 올려 주세요.', 'err');
+  }
+}
+
+init();
+})();
+</script>
+</body>
+</html>

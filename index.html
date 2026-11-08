@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARCHIVE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0B0B0B;color:#E9E9E4;font-family:'Noto Sans KR',sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid #FF4F1F;outline-offset:3px}
+.mono{font-family:'Space Mono','Nanum Gothic Coding',monospace}
+.disp{font-family:'Archivo Black','Noto Sans KR',sans-serif;font-weight:400}
+
+.top{border-bottom:1px solid #2A2A28}
+.top .in{max-width:1120px;margin:0 auto;padding:8px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.logo{font-size:20px;letter-spacing:.04em;padding:8px 0}
+.logo i{font-style:normal;color:#FF4F1F}
+.kick{font-size:11px;letter-spacing:.12em;color:#A6A6A0}
+
+.shell{max-width:1120px;margin:0 auto;padding:14px 32px 72px;display:flex;align-items:flex-start}
+.stage{flex:1 1 auto;min-width:0}
+.crumb{padding-bottom:12px;font-size:11px;letter-spacing:.12em;color:#A6A6A0}
+.tabs{flex:0 0 auto;position:relative;z-index:2;margin-left:-3px;margin-top:40px;display:flex;flex-direction:column;gap:12px}
+.itab{display:flex;flex-direction:column;justify-content:center;width:84px;border-radius:0 12px 12px 0;background:#ECECE7;color:#111;padding:0 0 0 12px;font-family:'Space Mono','Nanum Gothic Coding',monospace;font-size:11px;letter-spacing:.08em;line-height:1.5;box-shadow:4px 4px 10px rgba(0,0,0,.45);transition:width .15s,background .15s,transform .15s}
+.itab.h48{height:48px}.itab.h76{height:76px}
+.itab:hover{background:#FF4F1F;width:96px}
+.itab.on{background:#FF4F1F;transform:translateX(10px);font-weight:700}
+
+/* cover */
+.cover{background-color:#151515;background-image:linear-gradient(115deg,rgba(255,255,255,.07) 0%,transparent 38%,rgba(255,255,255,.03) 70%,transparent 100%);border-radius:20px;border:1px solid #2E2E2B;box-shadow:0 24px 60px rgba(0,0,0,.6);padding:40px;display:flex;flex-wrap:wrap;gap:28px;align-items:stretch}
+.label{flex:1 1 420px;min-width:0;background:#ECECE7;color:#111;padding:24px;display:flex;flex-direction:column;gap:20px;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.lbl-top{display:flex;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:.1em;padding-bottom:8px;border-bottom:2px solid #111}
+.ttl{margin:0;font-size:clamp(34px,8.5vw,58px);line-height:1;letter-spacing:-.01em;overflow-wrap:anywhere}
+.cdesc{margin:0;font-size:13px;line-height:1.9;color:#333;white-space:pre-line}
+.vol-row{display:flex;align-items:stretch;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid #111;border-bottom:1px solid #111}
+.barcode{width:150px;max-width:50%;height:44px;background-image:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px,#111 8px 11px,transparent 11px 12px)}
+.vol{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FF4F1F;color:#0B0B0B;padding:6px 18px}
+.vol .mono{font-size:10px;letter-spacing:.14em}.vol .disp{font-size:34px;line-height:1}
+.enters{display:flex;flex-direction:column;gap:10px}
+.enter{display:flex;justify-content:space-between;gap:12px;border:2px solid #111;padding:14px 16px;font-size:14px;letter-spacing:.04em}
+.enter:hover{background:#111;color:#ECECE7}
+.meta{display:flex;border:1px solid #111;font-size:10px;letter-spacing:.08em}
+.meta span{flex:1;padding:6px 10px;border-right:1px solid #111}.meta span:last-child{border-right:0}
+.xph{position:relative;background-color:#0F0F0F;background-image:linear-gradient(to top right,transparent calc(50% - .5px),#8A8A85 calc(50% - .5px),#8A8A85 calc(50% + .5px),transparent calc(50% + .5px)),linear-gradient(to top left,transparent calc(50% - .5px),#8A8A85 calc(50% - .5px),#8A8A85 calc(50% + .5px),transparent calc(50% + .5px))}
+.xph::before,.imgbox::before{content:'+';position:absolute;left:8px;top:2px;color:#E9E9E4;font-family:'Space Mono',monospace;font-size:20px;z-index:2}
+.xph::after,.imgbox::after{content:'+';position:absolute;right:8px;bottom:2px;color:#E9E9E4;font-family:'Space Mono',monospace;font-size:20px;z-index:2}
+.slot{flex:1 1 200px;min-width:0;min-height:320px;border:1px solid #3A3A38}
+.vtxt{position:absolute;left:14px;bottom:16px;transform-origin:left bottom;transform:rotate(-90deg) translateY(100%);font-size:11px;letter-spacing:.14em;color:#C9C9C3;white-space:nowrap;z-index:2}
+
+/* binder */
+.binder{position:relative;display:flex;flex-wrap:wrap;gap:48px;background-color:#D8D8D3;background-image:linear-gradient(115deg,rgba(255,255,255,.35),transparent 40%);border-radius:18px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.rings{position:absolute;left:50%;top:14px;bottom:14px;width:34px;margin-left:-17px;background-color:#F1F1ED;border-radius:6px;background-image:radial-gradient(ellipse 5px 9px at 50% 50%,#3A3A3A 95%,transparent 100%);background-size:34px 64px;box-shadow:0 0 0 1px #BDBDB6;pointer-events:none}
+.ring{position:absolute;left:-6px;width:46px;height:14px;border-radius:8px;background:linear-gradient(#8A8A85,#222)}
+.page{flex:1 1 440px;min-width:0;background:#ECECE7;color:#111;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:18px}
+.page.wide{flex-basis:100%}
+.pg-head{display:flex;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:.12em;padding-bottom:8px;border-bottom:2px solid #111}
+.h1{margin:0;font-size:clamp(34px,7vw,54px);line-height:1}
+.note{margin:0;font-size:13px;line-height:1.8;color:#333}
+.empty{padding:40px 8px;text-align:center;color:#4A4A46;line-height:1.9}
+
+.search-row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.search{flex:0 1 320px;min-width:0;border:2px solid #111;background:#F8F8F5;padding:12px 14px;font:inherit;font-size:15px;color:#111;border-radius:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.sleeve{display:flex;flex-direction:column;gap:10px;background:#F8F8F5;border:1px solid #C9C9C2;padding:12px;text-align:left;transition:transform .18s;outline:2px solid transparent}
+.sleeve:hover{transform:translateY(-5px);outline-color:#FF4F1F}
+.sleeve .ph{display:block;height:200px;position:relative;overflow:hidden}
+.sleeve img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.tag{align-self:flex-start;background:#FF4F1F;color:#0B0B0B;font-size:11px;font-weight:700;padding:2px 8px}
+.sleeve .nm{font-size:18px;font-weight:900;line-height:1.3;overflow-wrap:anywhere}
+.sleeve .sb{font-size:13px;color:#4A4A46;line-height:1.5}
+
+/* profile detail */
+.photo{background:#F8F8F5}
+.mainph{position:relative;aspect-ratio:1/1;max-height:640px;width:100%;border:10px solid #E4E4DE;background:#0F0F0F}
+.mainph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.mainph .tag{position:absolute;right:14px;top:38px;z-index:3}
+.thumbs-wrap{display:flex;align-items:center;gap:8px;margin-top:14px}
+.arrow{flex:0 0 36px;height:60px;border:1px solid #111;background:#ECECE7;color:#111;font-size:20px}
+.arrow:hover{background:#FF4F1F}
+.thumbs{flex:1 1 auto;min-width:0;display:flex;gap:10px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px}
+.th{flex:0 0 80px;height:80px;padding:0;border:3px solid transparent;background:#0F0F0F;opacity:.6}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th.on{border-color:#FF4F1F;opacity:1}
+.th:hover{opacity:1}
+.who{margin:0;font-size:clamp(30px,6vw,52px);line-height:1.15;font-weight:900;overflow-wrap:anywhere}
+.info{display:flex;flex-direction:column;border:2px solid #111;font-size:16px;line-height:1.7}
+.info .r{display:flex;border-bottom:1px solid #111}.info .r:last-child{border-bottom:0}
+.info .k{flex:0 0 96px;background:#DADAD3;padding:9px 12px;font-size:12px;font-weight:700;border-right:1px solid #111;display:flex;align-items:center}
+.info .v{padding:8px 14px;min-width:0;overflow-wrap:anywhere}
+.inl{border-bottom:2px solid #FF4F1F;font-weight:700}
+.inl:hover{background:#FF4F1F}
+.sheet{margin-top:28px;background:#F4F4F0;color:#111;padding:36px;display:flex;flex-direction:column;gap:40px;border-radius:8px;box-shadow:0 18px 36px rgba(0,0,0,.35)}
+.banner{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#111,#2A0D08 70%,#4A1308);color:#fff;padding:9px 16px;font-size:13px;font-weight:700;letter-spacing:.04em}
+.banner i{width:10px;height:10px;background:#FF4F1F;flex:0 0 auto}
+.prose{padding:26px 6px 0;font-size:17px;line-height:2.1;text-align:justify;word-break:keep-all;overflow-wrap:anywhere;color:#1A1A18}
+.prose p{margin:0 0 1.5em}
+.cline{padding-top:26px;text-align:center;font-size:17px;line-height:2.1;overflow-wrap:anywhere}
+.cline .l{margin:0}.cline .g{height:1.2em}
+.cline.q .l{font-size:19px;font-weight:700}
+.rel{display:flex;flex-direction:column;padding-top:10px}
+.rel a{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;border-top:1px solid #C9C9C2;padding:12px 6px}
+.rel a:hover{background:#FF4F1F}
+.rel .mono{flex:0 0 100px;font-size:12px}.rel b{flex:1 1 200px;font-size:16px}
+
+/* logs */
+.sleeveD{flex:1 1 440px;min-width:0;background-color:#161616;background-image:linear-gradient(115deg,rgba(255,255,255,.08),transparent 45%);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.sleeveD .pg-head{color:#C9C9C3;border-bottom:1px solid #4A4A47}
+.slip{display:flex;flex-direction:column;gap:4px;padding:16px 52px 16px 18px;color:#111;background-color:#E9E9E3;background-image:radial-gradient(circle 5px at calc(100% - 22px) 22%,#161616 98%,transparent 100%),radial-gradient(circle 5px at calc(100% - 22px) 50%,#161616 98%,transparent 100%),radial-gradient(circle 5px at calc(100% - 22px) 78%,#161616 98%,transparent 100%);transition:transform .18s}
+.slip:nth-child(4n+3){margin-left:14px}.slip:nth-child(4n+4){margin-left:4px}.slip:nth-child(4n+5){margin-left:18px}
+.slip:hover{background-color:#111;color:#F2F2EE;transform:translateX(8px)}
+.slip .sub{font-size:13px;color:#4A4A46}.slip:hover .sub{color:#D0D0CA}
+.slip .st{font-size:20px;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
+.more{border:1px solid #6A6A66;background:none;color:#E9E9E4;padding:12px;font-family:'Space Mono','Nanum Gothic Coding',monospace;font-size:12px;letter-spacing:.1em}
+.more:hover{background:#FF4F1F;color:#0B0B0B;border-color:#FF4F1F}
+.stat{display:flex;flex-direction:column;border-top:2px solid #111;font-size:13px}
+.stat div{display:flex;justify-content:space-between;gap:12px;padding:12px 4px;border-bottom:1px solid #111}
+.sel{border:2px solid #111;background:#F8F8F5;padding:12px;font:inherit;font-size:15px;color:#111;border-radius:0;width:100%}
+.flop{position:relative;align-self:flex-start;width:150px;height:150px;background:#1E1E1E;border-radius:6px;box-shadow:0 8px 18px rgba(0,0,0,.35)}
+.flop i{position:absolute;display:block}
+
+/* log read */
+.dark{background-color:#161616;background-image:linear-gradient(115deg,rgba(255,255,255,.08),transparent 45%);border-radius:14px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.paper{position:relative;max-width:820px;margin:0 auto;background:#F4F4F0;color:#111;padding:48px 48px 44px 96px;display:flex;flex-direction:column;gap:28px;clip-path:polygon(0 12px,6% 0,14% 10px,25% 2px,36% 12px,48% 0,60% 9px,72% 1px,85% 11px,94% 0,100% 8px,100% 100%,0 100%)}
+.paper .hole{position:absolute;left:30px;width:22px;height:22px;border-radius:50%;background:#161616}
+.lh{display:flex;flex-direction:column;gap:12px;padding-bottom:24px;border-bottom:2px solid #111}
+.lh h1{margin:0;font-size:clamp(26px,5vw,40px);line-height:1.3;font-weight:900;overflow-wrap:anywhere}
+.lh .m{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:11px;letter-spacing:.12em}
+.lh .w{font-size:14px;color:#3A3A36}
+.lb{font-size:18px;line-height:2;overflow-wrap:anywhere}
+.ln{margin:0;color:#3A3A36}
+.ln.me{margin:6px 0 6px 6%;padding-left:16px;border-left:4px solid #9A9A95;color:#2E2E2B}
+.dlg{color:#111;font-weight:700;background:linear-gradient(transparent 62%,rgba(255,79,31,.28) 62%)}
+.gap{height:.9em}
+.brk{border:0;border-top:1px dashed #8C8C86;margin:18px 0}
+.nav2{display:flex;justify-content:space-between;gap:12px;margin-top:16px}
+.btn{border:1px solid #6A6A66;padding:10px 16px;font-family:'Space Mono','Nanum Gothic Coding',monospace;font-size:12px;letter-spacing:.1em;color:#E9E9E4;background:none}
+.btn:hover{background:#FF4F1F;border-color:#FF4F1F;color:#0B0B0B}
+.btn.off{opacity:.35;pointer-events:none}
+.backrow{margin-bottom:16px}
+.foot{max-width:1120px;margin:0 auto;padding:0 32px 40px;font-size:11px;letter-spacing:.1em;color:#A6A6A0}
+
+@media (max-width:820px){.rings{display:none}.paper{padding:40px 24px 36px 64px}.paper .hole{left:20px}}
+@media (max-width:640px){
+ .shell{padding-left:12px;padding-right:0}.top .in,.foot{padding-left:12px;padding-right:12px}
+ .itab{width:60px;padding-left:8px;font-size:10px}.itab:hover{width:66px}
+ .cover{padding:20px}.binder{padding:12px;gap:20px}.page,.sleeveD{padding:16px}.sheet{padding:22px}.dark{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<a class="logo disp" href="#/" id="logo">ARCHIVE<i>®</i></a>
+<span class="kick mono" id="kick">CHARACTER &amp; LOG ARCHIVE</span>
+</div></header>
+
+<div class="shell">
+<div class="stage">
+<div class="crumb mono" id="crumb"></div>
+<main id="view"></main>
+</div>
+<nav class="tabs" aria-label="아카이브 메뉴">
+<a class="itab h48" href="#/" data-t="home">HOME</a>
+<a class="itab h76" href="#/profiles" data-t="profile"><span>01</span><span>PROFILE</span></a>
+<a class="itab h76" href="#/logs" data-t="log"><span>02</span><span>LOG</span></a>
+</nav>
+</div>
+<footer class="foot mono">개인 보관용 아카이브 · 무단 전재 및 재배포 금지</footer>
+<noscript><p style="padding:24px">이 사이트는 자바스크립트가 필요해요.</p></noscript>
+
+<script>
+(function () {
+'use strict';
+var D = { site: {}, characters: [], logs: [] };
+var logFilter = '';
+var logShown = 20;
+
+function $(s, r) { return (r || document).querySelector(s); }
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+function pad(n, l) { return String(n).padStart(l || 2, '0'); }
+function chars() { return D.characters || []; }
+function charById(id) {
+  var a = chars();
+  for (var i = 0; i < a.length; i++) if (a[i].id === id) return { c: a[i], i: i };
+  return null;
+}
+function fmtDate(d) { return String(d || '').replace(/-/g, '.'); }
+function logsSorted() {
+  var arr = (D.logs || []).map(function (l, i) { return { l: l, i: i }; });
+  arr.sort(function (a, b) {
+    var da = a.l.date || '', db = b.l.date || '';
+    if (da !== db) return da < db ? 1 : -1;
+    return b.i - a.i;
+  });
+  return arr.map(function (x) { return x.l; });
+}
+function charName(id) { var r = charById(id); return r ? r.c.name : '(삭제된 캐릭터)'; }
+
+var DLG = /(“[^”]*”|"[^"]*"|「[^」]*」|『[^』]*』)/;
+function fmtInline(t) {
+  return t.split(DLG).map(function (p, i) {
+    return i % 2 ? '<span class="dlg">' + esc(p) + '</span>' : esc(p);
+  }).join('');
+}
+function renderBody(body) {
+  var lines = String(body || '').replace(/\r\n?/g, '\n').split('\n'), html = '', prevGap = true;
+  lines.forEach(function (raw) {
+    var line = raw.replace(/\s+$/, '');
+    if (!line.trim()) { if (!prevGap) html += '<div class="gap"></div>'; prevGap = true; return; }
+    prevGap = false;
+    if (/^-{3,}$/.test(line.trim())) { html += '<hr class="brk">'; return; }
+    if (/^>\s?/.test(line)) { html += '<p class="ln me">' + fmtInline(line.replace(/^>\s?/, '')) + '</p>'; return; }
+    html += '<p class="ln">' + fmtInline(line) + '</p>';
+  });
+  return html;
+}
+function paras(text) {
+  return String(text || '').replace(/\r\n?/g, '\n').split(/\n{2,}/).filter(function (p) { return p.trim(); })
+    .map(function (p) { return '<p>' + esc(p.trim()).replace(/\n/g, '<br>') + '</p>'; }).join('');
+}
+function lineBlock(text) {
+  var lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+  while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+  return lines.map(function (l) { return l.trim() ? '<p class="l">' + esc(l) + '</p>' : '<div class="g"></div>'; }).join('');
+}
+function linkNames(text, selfId) {
+  var out = esc(text);
+  var names = chars().filter(function (c) { return c.id !== selfId && c.name && c.name.length >= 2; })
+    .sort(function (a, b) { return b.name.length - a.name.length; });
+  if (!names.length) return out;
+  var map = {};
+  var parts = names.map(function (c) { var e = esc(c.name); map[e] = c.id; return e.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); });
+  return out.replace(new RegExp(parts.join('|'), 'g'), function (m) {
+    return '<a class="inl" href="#/profile/' + encodeURIComponent(map[m]) + '">' + m + '</a>';
+  });
+}
+function maybeLink(text) {
+  var t = String(text || '').trim();
+  if (/^https?:\/\/\S+$/.test(t)) return '<a class="inl" target="_blank" rel="noopener noreferrer" href="' + esc(t) + '">' + esc(t) + '</a>';
+  return esc(text);
+}
+function xph(cls) { return '<span class="xph ' + (cls || '') + '"></span>'; }
+
+/* ---------- views ---------- */
+function vHome() {
+  var s = D.site || {};
+  var title = String(s.title || 'ARCHIVE').split('\n').map(esc).join('<br>');
+  var upd = s.updated || '—';
+  return '<section class="cover"><div class="label">' +
+    '<div class="mono lbl-top"><span>A-01</span><span>' + esc(s.kicker || 'CHARACTER ARCHIVE') + '</span></div>' +
+    '<h1 class="disp ttl">' + title + '</h1>' +
+    '<p class="mono cdesc">' + esc(s.tagline || '') + '</p>' +
+    '<div class="vol-row"><span class="barcode" aria-hidden="true"></span><span class="vol"><span class="mono">VOL.</span><span class="disp">' + esc(s.vol || '01') + '</span></span></div>' +
+    '<div class="enters">' +
+    '<a class="enter mono" href="#/profiles"><span>01 &nbsp;캐릭터 프로필 열기</span><span>→</span></a>' +
+    '<a class="enter mono" href="#/logs"><span>02 &nbsp;로그 보관함 열기</span><span>→</span></a></div>' +
+    '<div class="mono meta"><span>CHARACTERS<br><b>' + chars().length + '</b></span><span>LOGS<br><b>' + (D.logs || []).length + '</b></span><span>UPDATED<br><b>' + esc(upd) + '</b></span></div>' +
+    '</div><div class="xph slot"><span class="mono vtxt">COLLECTION No.' + pad(chars().length, 3) + '</span></div></section>';
+}
+
+function vProfiles() {
+  return '<div class="binder"><section class="page wide">' +
+    '<div class="mono pg-head"><span>PROFILE SLEEVES</span><span id="pcount"></span></div>' +
+    '<div class="search-row"><h1 class="disp h1">PROFILE</h1>' +
+    '<input id="q" class="search" type="search" placeholder="이름·소속·직업으로 검색" aria-label="캐릭터 검색"></div>' +
+    '<div class="grid" id="grid"></div></section></div>';
+}
+function drawGrid() {
+  var q = ($('#q') ? $('#q').value : '').trim().toLowerCase();
+  var list = chars().map(function (c, i) { return { c: c, i: i }; }).filter(function (x) {
+    if (!q) return true;
+    return [x.c.name, x.c.affiliation, x.c.job].join(' ').toLowerCase().indexOf(q) >= 0;
+  });
+  $('#pcount').textContent = list.length + ' / ' + chars().length;
+  if (!chars().length) { $('#grid').innerHTML = '<p class="empty" style="grid-column:1/-1">아직 등록된 캐릭터가 없어요.<br>admin.html 에서 캐릭터를 추가해 보세요.</p>'; return; }
+  if (!list.length) { $('#grid').innerHTML = '<p class="empty" style="grid-column:1/-1">검색 결과가 없어요.</p>'; return; }
+  $('#grid').innerHTML = list.map(function (x) {
+    var c = x.c, img = (c.images || [])[0];
+    var ph = img ? '<span class="ph"><img loading="lazy" src="' + esc(img) + '" alt=""></span>' : '<span class="ph xph"></span>';
+    var sub = [c.affiliation, c.job].filter(Boolean).map(esc).join(' · ');
+    return '<a class="sleeve" href="#/profile/' + encodeURIComponent(c.id) + '">' + ph +
+      '<span class="tag mono">NO.' + pad(x.i + 1) + '</span><span class="nm">' + esc(c.name || '이름 없음') + '</span>' +
+      (sub ? '<span class="sb">' + sub + '</span>' : '') + '</a>';
+  }).join('');
+}
+
+function vProfile(id) {
+  var r = charById(id);
+  if (!r) return '<div class="binder"><section class="page wide"><p class="empty">캐릭터를 찾을 수 없어요.<br><a class="inl" href="#/profiles">목록으로</a></p></section></div>';
+  var c = r.c, no = pad(r.i + 1), imgs = c.images || [];
+  var left;
+  if (imgs.length) {
+    left = '<div class="mainph imgbox"><img id="mainimg" src="' + esc(imgs[0]) + '" alt="' + esc(c.name) + ' 사진 1"><span class="mono vtxt">COLLECTION No.' + no + '</span><span class="tag mono">NO.' + no + '</span></div>';
+    if (imgs.length > 1) {
+      left += '<div class="thumbs-wrap"><button class="arrow" data-dir="-1" aria-label="이전 사진">‹</button><div class="thumbs" id="thumbs">' +
+        imgs.map(function (s, i) { return '<button class="th' + (i === 0 ? ' on' : '') + '" data-i="' + i + '" aria-label="사진 ' + (i + 1) + '"><img src="' + esc(s) + '" alt=""></button>'; }).join('') +
+        '</div><button class="arrow" data-dir="1" aria-label="다음 사진">›</button></div>';
+    }
+  } else {
+    left = '<div class="mainph xph"><span class="mono vtxt">COLLECTION No.' + no + '</span><span class="tag mono">NO.' + no + '</span></div>';
+  }
+  var fields = [['나이', c.age], ['성별', c.gender], ['신체', c.body], ['직업', c.job], ['소속', c.affiliation], ['관계인물', c.relations], ['테마곡', c.theme], ['뛰었던 커뮤', c.community]];
+  (c.extra || []).forEach(function (e) { if (e && e.k) fields.push([e.k, e.v]); });
+  var rows = fields.filter(function (f) { return f[1] && String(f[1]).trim(); }).map(function (f) {
+    var v = f[0] === '관계인물' ? linkNames(f[1], c.id) : f[0] === '테마곡' ? maybeLink(f[1]) : esc(f[1]);
+    return '<div class="r"><div class="k mono">' + esc(f[0]) + '</div><div class="v">' + v.replace(/\n/g, '<br>') + '</div></div>';
+  }).join('');
+  var sheet = '';
+  if (c.desc && c.desc.trim()) sheet += '<section><div class="banner"><i></i>' + esc(c.descTitle || '프로필') + '</div><div class="prose">' + paras(c.desc) + '</div></section>';
+  if (c.notes && c.notes.trim()) sheet += '<section><div class="banner"><i></i>' + esc(c.notesTitle || '특이사항') + '</div><div class="cline">' + lineBlock(c.notes) + '</div></section>';
+  if (c.quote && c.quote.trim()) sheet += '<section><div class="banner"><i></i>' + esc(c.quoteTitle || '한마디') + '</div><div class="cline q">' + lineBlock(c.quote) + '</div></section>';
+  var rel = logsSorted().filter(function (l) { return l.characterId === c.id; });
+  if (rel.length) sheet += '<section><div class="banner"><i></i>관련 로그 ' + rel.length + '건</div><div class="rel">' + rel.map(function (l) {
+    return '<a href="#/log/' + encodeURIComponent(l.id) + '"><span class="mono">' + esc(fmtDate(l.date)) + '</span><b>' + esc(l.title || '제목 없음') + '</b></a>';
+  }).join('') + '</div></section>';
+  return '<div class="backrow"><a class="btn" href="#/profiles">← INDEX</a></div>' +
+    '<div class="binder"><div class="rings" aria-hidden="true"><span class="ring" style="top:18%"></span><span class="ring" style="top:50%"></span><span class="ring" style="top:82%"></span></div>' +
+    '<section class="page photo">' + left + '</section>' +
+    '<section class="page"><div class="mono pg-head"><span>CASTING RECORD</span><span>NO.' + no + '</span></div>' +
+    '<h1 class="who">' + esc(c.name || '이름 없음') + '</h1>' +
+    (rows ? '<div class="info">' + rows + '</div>' : '<p class="note">아직 입력된 정보가 없어요.</p>') + '</section></div>' +
+    (sheet ? '<article class="sheet">' + sheet + '</article>' : '');
+}
+function wireProfile() {
+  var thumbs = $('#thumbs'), main = $('#mainimg');
+  if (!thumbs || !main) return;
+  var imgs = [].slice.call(thumbs.querySelectorAll('.th'));
+  function pick(i) {
+    imgs.forEach(function (b, k) { b.classList.toggle('on', k === i); });
+    var src = imgs[i].querySelector('img').getAttribute('src');
+    main.setAttribute('src', src); main.setAttribute('alt', '사진 ' + (i + 1));
+    imgs[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+  thumbs.addEventListener('click', function (e) {
+    var b = e.target.closest('.th'); if (b) pick(+b.getAttribute('data-i'));
+  });
+  [].forEach.call(document.querySelectorAll('.arrow'), function (a) {
+    a.addEventListener('click', function () {
+      var cur = imgs.findIndex(function (b) { return b.classList.contains('on'); });
+      var n = (cur + (+a.getAttribute('data-dir')) + imgs.length) % imgs.length; pick(n);
+    });
+  });
+}
+
+function vLogs() {
+  var opts = '<option value="">전체 캐릭터</option>' + chars().map(function (c) {
+    return '<option value="' + esc(c.id) + '"' + (c.id === logFilter ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+  }).join('');
+  return '<div class="binder"><div class="rings" aria-hidden="true"><span class="ring" style="top:18%"></span><span class="ring" style="top:50%"></span><span class="ring" style="top:82%"></span></div>' +
+    '<section class="sleeveD"><div class="mono pg-head"><span>LOG SLIPS</span><span>최신순</span></div><div id="slips" style="display:flex;flex-direction:column;gap:14px"></div></section>' +
+    '<section class="page"><div class="mono pg-head"><span>LOG INDEX</span><span id="lcount"></span></div>' +
+    '<h1 class="disp h1">LOG<br>BACKUP</h1><p class="note mono">왼쪽 로그 종이를 누르면 기록이 열려요.</p>' +
+    '<label class="mono" style="font-size:11px;letter-spacing:.12em" for="lf">FILTER</label><select id="lf" class="sel">' + opts + '</select>' +
+    '<div class="stat mono"><div><span>총 로그</span><b>' + (D.logs || []).length + '건</b></div><div><span>등장 캐릭터</span><b>' + chars().length + '명</b></div><div><span>최근 업데이트</span><b>' + esc((D.site || {}).updated || '—') + '</b></div></div>' +
+    '<div class="flop" aria-hidden="true"><i style="left:36px;top:0;width:70px;height:40px;background:#CFCFC9"></i><i style="left:82px;top:8px;width:14px;height:24px;background:#1E1E1E"></i><i style="left:20px;bottom:0;width:110px;height:78px;background:#F4F4F0;border-radius:3px 3px 0 0"></i><i class="mono" style="left:30px;bottom:44px;font-size:10px;color:#111;letter-spacing:.08em;white-space:nowrap">DATA DROP_01</i><i style="left:30px;bottom:14px;width:60px;height:12px;background:#FF4F1F"></i></div>' +
+    '</section></div>';
+}
+function drawSlips() {
+  var all = logsSorted().filter(function (l) { return !logFilter || l.characterId === logFilter; });
+  $('#lcount').textContent = all.length + '건';
+  var el = $('#slips');
+  if (!all.length) { el.innerHTML = '<p class="empty" style="color:#C9C9C3">' + ((D.logs || []).length ? '이 캐릭터의 로그가 아직 없어요.' : '아직 등록된 로그가 없어요.<br>admin.html 에서 로그를 추가해 보세요.') + '</p>'; return; }
+  var show = all.slice(0, logShown);
+  el.innerHTML = show.map(function (l) {
+    return '<a class="slip" href="#/log/' + encodeURIComponent(l.id) + '"><span class="mono sub">' + esc(fmtDate(l.date)) + '</span><span class="st">' + esc(l.title || '제목 없음') + '</span><span class="sub">등장 · ' + esc(charName(l.characterId)) + '</span></a>';
+  }).join('') + (all.length > show.length ? '<button class="more" id="more">더 보기 (' + (all.length - show.length) + ')</button>' : '');
+  var m = $('#more');
+  if (m) m.addEventListener('click', function () { logShown += 20; drawSlips(); });
+}
+function wireLogs() {
+  $('#lf').addEventListener('change', function (e) { logFilter = e.target.value; logShown = 20; drawSlips(); });
+  drawSlips();
+}
+
+function vLog(id) {
+  var all = logsSorted(), idx = -1;
+  all.forEach(function (l, i) { if (l.id === id) idx = i; });
+  if (idx < 0) return '<div class="binder"><section class="page wide"><p class="empty">로그를 찾을 수 없어요.<br><a class="inl" href="#/logs">목록으로</a></p></section></div>';
+  var l = all[idx], r = charById(l.characterId);
+  var who = r ? '<a class="inl" href="#/profile/' + encodeURIComponent(r.c.id) + '">' + esc(r.c.name) + '</a>' : '(삭제된 캐릭터)';
+  var newer = all[idx - 1], older = all[idx + 1];
+  return '<div class="backrow"><a class="btn" href="#/logs">← LOG LIST</a></div>' +
+    '<div class="dark"><article class="paper">' +
+    '<span class="hole" style="top:20%"></span><span class="hole" style="top:50%"></span><span class="hole" style="top:80%"></span>' +
+    '<header class="lh"><div class="m mono"><span>LOG-' + pad(all.length - idx, 4) + '</span><span>' + esc(fmtDate(l.date)) + '</span></div>' +
+    '<h1>' + esc(l.title || '제목 없음') + '</h1><span class="w">등장 · ' + who + '</span></header>' +
+    '<div class="lb">' + renderBody(l.body) + '</div></article></div>' +
+    '<div class="nav2"><a class="btn' + (newer ? '' : ' off') + '" href="' + (newer ? '#/log/' + encodeURIComponent(newer.id) : '#') + '">← NEWER</a>' +
+    '<a class="btn' + (older ? '' : ' off') + '" href="' + (older ? '#/log/' + encodeURIComponent(older.id) : '#') + '">OLDER →</a></div>';
+}
+
+/* ---------- router ---------- */
+function setTab(t) {
+  [].forEach.call(document.querySelectorAll('.itab'), function (a) { a.classList.toggle('on', a.getAttribute('data-t') === t); });
+}
+function route() {
+  var h = (location.hash || '#/').replace(/^#\/?/, '');
+  var parts = h.split('/'), name = parts[0] || '', arg = parts[1] ? decodeURIComponent(parts[1]) : '';
+  var v = $('#view'), crumb = '', tab = 'home', title = (D.site && D.site.title ? String(D.site.title).replace(/\n/g, ' ') : 'ARCHIVE');
+  if (name === 'profiles') { tab = 'profile'; crumb = 'HOME / PROFILE'; v.innerHTML = vProfiles(); $('#q').addEventListener('input', drawGrid); drawGrid(); }
+  else if (name === 'profile') { tab = 'profile'; var r = charById(arg); crumb = 'HOME / PROFILE / ' + (r ? 'NO.' + pad(r.i + 1) : '?'); v.innerHTML = vProfile(arg); wireProfile(); if (r && r.c.name) title = r.c.name + ' · ' + title; }
+  else if (name === 'logs') { tab = 'log'; crumb = 'HOME / LOG'; v.innerHTML = vLogs(); wireLogs(); }
+  else if (name === 'log') { tab = 'log'; crumb = 'HOME / LOG / ' + arg; v.innerHTML = vLog(arg); var lg = (D.logs || []).filter(function (x) { return x.id === arg; })[0]; if (lg && lg.title) title = lg.title + ' · ' + title; }
+  else { v.innerHTML = vHome(); }
+  $('#crumb').textContent = crumb;
+  setTab(tab);
+  document.title = title;
+  window.scrollTo(0, 0);
+}
+
+function boot(data) {
+  if (data && typeof data === 'object') {
+    D = data; D.site = D.site || {}; D.characters = D.characters || []; D.logs = D.logs || [];
+  }
+  var k = (D.site && D.site.kicker) || 'CHARACTER & LOG ARCHIVE';
+  $('#kick').textContent = k;
+  $('#logo').innerHTML = esc((D.site && D.site.logo) || 'ARCHIVE') + '<i>®</i>';
+  window.addEventListener('hashchange', route);
+  route();
+}
+var s = document.createElement('script');
+s.src = 'data/archive.js?v=' + Date.now();
+s.onload = function () { boot(window.ARCHIVE_DATA); };
+s.onerror = function () {
+  boot(null);
+  $('#view').innerHTML = '<div class="binder"><section class="page wide"><p class="empty">data/archive.js 를 불러오지 못했어요.<br>파일이 올바른 위치(data 폴더)에 있는지 확인해 주세요.</p></section></div>';
+};
+document.head.appendChild(s);
+})();
+</script>
+</body>
+</html>
