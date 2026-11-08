@@ -5,7 +5,7 @@ window.ARCHIVE_DATA = {
     "kicker": "CHARACTER ARCHIVE",
     "tagline": "캐릭터 프로필과 로그를 보관하는 개인 아카이브입니다.\n[한 줄 소개를 admin.html 의 '사이트' 탭에서 바꿔 주세요]",
     "vol": "01",
-    "updated": ""
+    "updated": "2026.11.09"
   },
   "characters": [
     {
