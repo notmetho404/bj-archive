@@ -160,7 +160,7 @@ button{font:inherit;cursor:pointer;color:inherit}
  .shell{padding-left:12px;padding-right:12px;flex-direction:column;align-items:stretch}
  .stage,#view{display:contents}
  .tabs{display:none}
- .kick{pointer-events:auto;display:flex;align-items:center;gap:10px;border:1px solid #4A4A47;padding:8px 10px;color:#E9E9E4}.kbar{display:inline;font-size:16px;line-height:1;color:#FF4F1F}.kick[aria-expanded=true]{background:#FF4F1F;color:#0B0B0B;border-color:#FF4F1F}.kick[aria-expanded=true] .kbar{color:#0B0B0B}
+ .kick{pointer-events:auto;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #4A4A47;padding:0;color:#E9E9E4}#kicktxt{display:none}.kbar{display:block;font-size:0;width:20px;height:14px;background:linear-gradient(#FF4F1F,#FF4F1F) 0 0/100% 2px no-repeat,linear-gradient(#FF4F1F,#FF4F1F) 0 50%/100% 2px no-repeat,linear-gradient(#FF4F1F,#FF4F1F) 0 100%/100% 2px no-repeat}.kick[aria-expanded=true] .kbar{background:linear-gradient(#0B0B0B,#0B0B0B) 0 0/100% 2px no-repeat,linear-gradient(#0B0B0B,#0B0B0B) 0 50%/100% 2px no-repeat,linear-gradient(#0B0B0B,#0B0B0B) 0 100%/100% 2px no-repeat}.kick[aria-expanded=true]{background:#FF4F1F;color:#0B0B0B;border-color:#FF4F1F}.kick[aria-expanded=true] .kbar{color:#0B0B0B}
  .mmenu{position:absolute;right:12px;top:100%;z-index:20;min-width:200px;flex-direction:column;background:#ECECE7;color:#111;box-shadow:0 14px 30px rgba(0,0,0,.6);border-top:3px solid #FF4F1F}.mmenu:not([hidden]){display:flex}.mmenu a{display:flex;gap:14px;padding:15px 18px;font-family:'Space Mono','Nanum Gothic Coding',monospace;font-size:13px;letter-spacing:.08em;border-bottom:1px solid #C9C9C2}.mmenu a:last-child{border-bottom:0}.mmenu a span{color:#6A6A66}.mmenu a.on{background:#FF4F1F;font-weight:700}.mmenu a.on span{color:#111}.top .in,.foot{padding-left:12px;padding-right:12px}
  .cover{padding:20px}.binder{padding:12px;gap:20px}.page,.sleeveD{padding:16px}.sheet{padding:18px}.dark{padding:12px}
  .prose{font-size:13px;line-height:1.95;padding:20px 2px 0;text-align:justify}
@@ -175,7 +175,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 <body>
 <header class="top"><div class="in">
 <a class="logo disp" href="#/" id="logo">ARCHIVE<i>®</i></a>
-<button type="button" class="kick mono" id="kick" aria-haspopup="true" aria-expanded="false" aria-controls="mmenu"><span id="kicktxt">CHARACTER &amp; LOG ARCHIVE</span><b class="kbar" aria-hidden="true">≡</b></button>
+<button type="button" class="kick mono" id="kick" aria-label="메뉴" aria-haspopup="true" aria-expanded="false" aria-controls="mmenu"><span id="kicktxt">CHARACTER &amp; LOG ARCHIVE</span><b class="kbar" aria-hidden="true">≡</b></button>
 <nav class="mmenu" id="mmenu" aria-label="아카이브 메뉴" hidden><a href="#/" data-t="home"><span>00</span>HOME</a><a href="#/profiles" data-t="profile"><span>01</span>PROFILE</a><a href="#/logs" data-t="log"><span>02</span>LOG</a></nav>
 </div></header>
 
