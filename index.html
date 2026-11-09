@@ -20,7 +20,9 @@ button{font:inherit;cursor:pointer;color:inherit}
 .top .in{max-width:1120px;margin:0 auto;padding:8px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .logo{font-size:20px;letter-spacing:.04em;padding:8px 0}
 .logo i{font-style:normal;color:#FF4F1F}
-.kick{font-size:11px;letter-spacing:.12em;color:#A6A6A0}
+.kick{font-size:11px;letter-spacing:.12em;color:#A6A6A0;background:none;border:0;padding:0;text-align:right;pointer-events:none}
+.kbar,.mmenu{display:none}
+.top .in{position:relative}
 
 .shell{max-width:1120px;margin:0 auto;padding:14px 32px 72px;display:flex;align-items:flex-start}
 .stage{flex:1 1 0;min-width:0;width:100%}
@@ -157,10 +159,9 @@ button{font:inherit;cursor:pointer;color:inherit}
 @media (max-width:640px){
  .shell{padding-left:12px;padding-right:12px;flex-direction:column;align-items:stretch}
  .stage,#view{display:contents}
- .crumb{order:1}#view>.backrow{order:2;margin-bottom:10px;align-self:flex-start}#view>*{order:4}.tabs{order:3}.top .in,.foot{padding-left:12px;padding-right:12px}
- .tabs{flex:0 0 auto;width:auto;align-self:stretch;flex-direction:row;justify-content:flex-end;gap:6px;margin:0 8px -1px}
- .itab,.itab.h48,.itab.h76{width:auto;height:38px;flex-direction:row;align-items:center;gap:6px;padding:0 14px;border-radius:12px 12px 0 0;font-size:11px;box-shadow:0 -2px 8px rgba(0,0,0,.35)}
- .itab:hover{width:auto}.itab.on{transform:none;height:42px;align-self:flex-end}
+ .tabs{display:none}
+ .kick{pointer-events:auto;display:flex;align-items:center;gap:10px;border:1px solid #4A4A47;padding:8px 10px;color:#E9E9E4}.kbar{display:inline;font-size:16px;line-height:1;color:#FF4F1F}.kick[aria-expanded=true]{background:#FF4F1F;color:#0B0B0B;border-color:#FF4F1F}.kick[aria-expanded=true] .kbar{color:#0B0B0B}
+ .mmenu{position:absolute;right:12px;top:100%;z-index:20;min-width:200px;flex-direction:column;background:#ECECE7;color:#111;box-shadow:0 14px 30px rgba(0,0,0,.6);border-top:3px solid #FF4F1F}.mmenu:not([hidden]){display:flex}.mmenu a{display:flex;gap:14px;padding:15px 18px;font-family:'Space Mono','Nanum Gothic Coding',monospace;font-size:13px;letter-spacing:.08em;border-bottom:1px solid #C9C9C2}.mmenu a:last-child{border-bottom:0}.mmenu a span{color:#6A6A66}.mmenu a.on{background:#FF4F1F;font-weight:700}.mmenu a.on span{color:#111}.top .in,.foot{padding-left:12px;padding-right:12px}
  .cover{padding:20px}.binder{padding:12px;gap:20px}.page,.sleeveD{padding:16px}.sheet{padding:18px}.dark{padding:12px}
  .prose{font-size:13px;line-height:1.95;padding:20px 2px 0;text-align:justify}
  .cline{font-size:13px;line-height:1.95;padding-top:20px}.cline.q .l{font-size:14.5px}
@@ -174,7 +175,8 @@ button{font:inherit;cursor:pointer;color:inherit}
 <body>
 <header class="top"><div class="in">
 <a class="logo disp" href="#/" id="logo">ARCHIVE<i>®</i></a>
-<span class="kick mono" id="kick">CHARACTER &amp; LOG ARCHIVE</span>
+<button type="button" class="kick mono" id="kick" aria-haspopup="true" aria-expanded="false" aria-controls="mmenu"><span id="kicktxt">CHARACTER &amp; LOG ARCHIVE</span><b class="kbar" aria-hidden="true">≡</b></button>
+<nav class="mmenu" id="mmenu" aria-label="아카이브 메뉴" hidden><a href="#/" data-t="home"><span>00</span>HOME</a><a href="#/profiles" data-t="profile"><span>01</span>PROFILE</a><a href="#/logs" data-t="log"><span>02</span>LOG</a></nav>
 </div></header>
 
 <div class="shell">
@@ -417,8 +419,16 @@ function vLog(id) {
 }
 
 /* ---------- router ---------- */
+function closeMenu() { var k = $('#kick'), m = $('#mmenu'); if (m) { m.hidden = true; k.setAttribute('aria-expanded', 'false'); } }
+document.addEventListener('click', function (e) {
+  var k = $('#kick'), m = $('#mmenu');
+  if (e.target.closest('#kick')) { var open = m.hidden; m.hidden = !open; k.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  else if (!e.target.closest('#mmenu') || e.target.closest('#mmenu a')) closeMenu();
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMenu(); });
+window.addEventListener('hashchange', closeMenu);
 function setTab(t) {
-  [].forEach.call(document.querySelectorAll('.itab'), function (a) { a.classList.toggle('on', a.getAttribute('data-t') === t); });
+  [].forEach.call(document.querySelectorAll('.itab, .mmenu a'), function (a) { a.classList.toggle('on', a.getAttribute('data-t') === t); });
 }
 function route() {
   var h = (location.hash || '#/').replace(/^#\/?/, '');
@@ -440,7 +450,7 @@ function boot(data) {
     D = data; D.site = D.site || {}; D.characters = D.characters || []; D.logs = D.logs || [];
   }
   var k = (D.site && D.site.kicker) || 'CHARACTER & LOG ARCHIVE';
-  $('#kick').textContent = k;
+  $('#kicktxt').textContent = k;
   $('#logo').innerHTML = esc((D.site && D.site.logo) || 'ARCHIVE') + '<i>®</i>';
   window.addEventListener('hashchange', route);
   route();
