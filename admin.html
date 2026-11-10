@@ -411,7 +411,7 @@ async function apiErr(res) {
 function ghUrl(cfg, path) { return 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) + '/contents/' + path.split('/').map(encodeURIComponent).join('/'); }
 function ghHeaders(cfg) { return { Authorization: 'Bearer ' + cfg.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' }; }
 async function ghSha(cfg, path) {
-  var res = await fetch(ghUrl(cfg, path) + '?ref=' + encodeURIComponent(cfg.branch), { headers: ghHeaders(cfg) });
+  var res = await fetch(ghUrl(cfg, path) + '?ref=' + encodeURIComponent(cfg.branch) + '&_=' + Date.now(), { headers: ghHeaders(cfg), cache: 'no-store' });
   if (res.status === 404) return null;
   if (!res.ok) throw await apiErr(res);
   return (await res.json()).sha;
@@ -422,7 +422,7 @@ async function ghPut(cfg, path, b64, msg, withSha) {
     var body = { message: msg, content: b64, branch: cfg.branch }; if (sha) body.sha = sha;
     var res = await fetch(ghUrl(cfg, path), { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(cfg)), body: JSON.stringify(body) });
     if (res.ok) return;
-    if ((res.status === 409 || res.status === 422) && attempt === 0) { sha = await ghSha(cfg, path); continue; }
+    if ((res.status === 409 || res.status === 422) && attempt === 0) { await new Promise(function (r) { setTimeout(r, 1200); }); sha = await ghSha(cfg, path); continue; }
     throw await apiErr(res);
   }
 }
